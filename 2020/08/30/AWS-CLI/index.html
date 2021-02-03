@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Hexo
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            AWS-CLI
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h3 id="配置AWS-CLI"><a href="#配置AWS-CLI" class="headerlink" title="配置AWS CLI"></a>配置AWS CLI</h3><p>在命令行运行 aws configure 以设置您的证书和设置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ aws configure</span><br><span class="line">AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE</span><br><span class="line">AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</span><br><span class="line">Default region name [None]: us-east-2</span><br><span class="line">Default output format [None]: json</span><br></pre></td></tr></table></figure>
+<ul>
+<li>AWS 访问密钥 ID 和 AWS 秘密访问密钥 – 这些是您的账户凭证，如果没有，登陆控制台，到用户的认证情报Tag下生成。注意；只能下载一次CSV文件，一定妥善保管。</li>
+<li>默认区域名称 – 标识默认情况下您要将请求发送到的服务器所在的区域。</li>
+<li>默认输出格式 – 此格式可以是 json、text 或 table。如果不指定，将使用 json。</li>
+</ul>
+<p>配置后的文件保存于</p>
+<ol>
+<li>CLI 凭证文件 （aws_access_key_id aws_secret_access_key）<br>~/.aws/credentials（在 Linux, macOS, or Unix 上）<br>C:\Users\USERNAME.aws\credentials（在 Windows 上）</li>
+<li>CLI 配置文件（region output）<br>~/.aws/config（在 Linux, macOS, or Unix 上）<br>C:\Users\USERNAME.aws\config（在 Windows 上）。</li>
+</ol>
+<h3 id="配置文件指定"><a href="#配置文件指定" class="headerlink" title="配置文件指定"></a>配置文件指定</h3><p>~/.aws/credentials</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[default]</span><br><span class="line">aws_access_key_id=AKIAIOSFODNN7EXAMPLE</span><br><span class="line">aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY</span><br><span class="line"></span><br><span class="line">[user1]</span><br><span class="line">aws_access_key_id=AKIAI44QH8DHBEXAMPLE</span><br><span class="line">aws_secret_access_key=je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY</span><br></pre></td></tr></table></figure>
+<p>~/.aws/config</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[default]</span><br><span class="line">region=us-west-2</span><br><span class="line">output=json</span><br><span class="line"></span><br><span class="line">[profile user1]</span><br><span class="line">region=us-east-1</span><br><span class="line">output=text</span><br></pre></td></tr></table></figure>
+<h4 id="使用命名配置文件"><a href="#使用命名配置文件" class="headerlink" title="使用命名配置文件"></a>使用命名配置文件</h4><p>请向您的命令添加 –profile profile-name 选项。<br>未指定时，使用缺省配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws ec2 describe-instances --profile user1</span><br></pre></td></tr></table></figure>
+<p>指定区域·/ 指定输出格式·</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ aws ec2 describe-instances --output table --region us-east-1</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

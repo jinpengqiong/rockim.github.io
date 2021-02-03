@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Hexo
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            javascript 中事件冒泡和事件捕获机制
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h3 id="什么是事件？"><a href="#什么是事件？" class="headerlink" title="什么是事件？"></a>什么是事件？</h3><p>事件是文档和浏览器窗口中发生的特定的交互瞬间。 事件是javascript应用跳动的心脏，也是把所有东西黏在一起的胶水，当我们与浏览器中web页面进行某些类型的交互时，事件就发生了。</p>
+<p> 事件可能是用户在某些内容上的点击，鼠标经过某个特定元素或按下键盘上的某些按键，事件还可能是web浏览器中发生的事情，比如说某个web页面加载完成，或者是用户滚动窗口或改变窗口大小。</p>
+<h3 id="什么是事件流"><a href="#什么是事件流" class="headerlink" title="什么是事件流"></a>什么是事件流</h3><p> 事件流描述的是从页面中接受事件的顺序，但有意思的是，微软（IE）和网景（Netscape）开发团队居然提出了两个截然相反的事件流概念，IE的事件流是事件冒泡流(event bubbling)，而Netscape的事件流是事件捕获流(event capturing)。</p>
+<ul>
+<li>事件冒泡</li>
+</ul>
+<p>IE提出的事件流叫做事件冒泡，即事件开始时由最具体的元素接收，然后逐级向上传播到较为不具体的节点。</p>
+<ul>
+<li>事件捕获<br>网景公司提出的事件流叫事件捕获流。</li>
+</ul>
+<p>事件捕获流的思想是不太具体的DOM节点应该更早接收到事件，而最具体的节点应该最后接收到事件，针对上面同样的例子，点击按钮，那么此时click事件会按照这样传播：（下面我们就借用addEventListener的第三个参数来模拟事件捕获流）</p>
+<h3 id="DOM事件流"><a href="#DOM事件流" class="headerlink" title="DOM事件流"></a>DOM事件流</h3><p>‘DOM2级事件’规定的事件流包含3个阶段，事件捕获阶段、处于目标阶段、事件冒泡阶段。首先发生的事件捕获为截获事件提供机会，然后是实际的目标接收事件，最后一个阶段是事件冒泡阶段，可以在这个阶段对事件做出响应。</p>
+<p>在DOM事件流中，事件的目标在捕获阶段不会接收到事件，这意味着在捕获阶段事件从document到<p>就停止了，下个阶段是处于目标阶段，于是事件在<p>上发生，并在事件处理中被看成冒泡阶段的一部分，然后，冒泡阶段发生，事件又传播回document。</p>
+<p><img src="http://image.mzliaoba.com/pic/chatroom/2562048239/20200509/abe04323-b8ba-4eef-8963-ef6691cd590f1174211-20171201225153933-1205737719.png" alt="img1"></p>
+<h3 id="关于DOM-2级事件处理程序"><a href="#关于DOM-2级事件处理程序" class="headerlink" title="关于DOM 2级事件处理程序"></a>关于DOM 2级事件处理程序</h3><p>DOM 2级事件定义了两方法：用于处理添加事件和删除事件的操作： 添加事件 addEventListener()     删除事件  removeEventListener()</p>
+<p>所有DOM节点中都包含这两个方法，并且他们都包含3个参数： （1） 要处理的事件方式（例如：click，mouseover,dbclick…..） （2）事件处理的函数，可以为匿名函数，也可以为命名函数（但如果需要删除事件，必须是命名函数） （3）一个布尔值，代表是处于事件冒泡阶段处理还是事件捕获阶段（true：表示在捕获阶段调用事件处理程序；false:表示在冒泡阶段调用事件处理程序）</p>
+<p>使用DOM 2级事件处理程序的主要好处是可以添加多个事件处理程序，事件处理会按照他们的顺序触发，通过addEventListener添加的事件只能用removeEventListener来移除，移除时传入的参数与添加时使用的参数必须相同，这也意味着添加的匿名函数将无法移除，（注意：我们默认的第三个参数都是默认false,是指在冒泡阶段添加，大多数情况下，都是将事件处理程序添加到事件的冒泡阶段，这样可以最大限度的兼容各个浏览器）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">&quot;en&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta charset=<span class="string">&quot;UTF-&quot;</span>&gt;</span><br><span class="line">  &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">  &lt;style&gt;</span><br><span class="line">    <span class="comment">#outer &#123;</span></span><br><span class="line">      text-align: center;</span><br><span class="line">      width: px;</span><br><span class="line">      height: px;</span><br><span class="line">      background-color: <span class="comment">#ccc;</span></span><br><span class="line">      margin: auto;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#middle &#123;</span></span><br><span class="line">      width: px;</span><br><span class="line">      height: px;</span><br><span class="line">      background-color: purple;</span><br><span class="line">      margin: auto;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#inner &#123;</span></span><br><span class="line">      width: px;</span><br><span class="line">      height: px;</span><br><span class="line">      background-color: lightblue;</span><br><span class="line">      margin: auto;</span><br><span class="line">      border-rad</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div id=<span class="string">&#x27;outer&#x27;</span>&gt;</span><br><span class="line">    &lt;span&gt;outer&lt;/span&gt;</span><br><span class="line">    &lt;div id=<span class="string">&#x27;middle&#x27;</span>&gt;</span><br><span class="line">      &lt;span&gt;middle&lt;/span&gt;</span><br><span class="line">      &lt;div id=<span class="string">&#x27;inner&#x27;</span>&gt;</span><br><span class="line">        &lt;span&gt;inner&lt;/span&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;script&gt;</span><br><span class="line">    <span class="keyword">function</span> $(element) &#123;</span><br><span class="line">      <span class="built_in">return</span> document.getElementById(element);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> on(element, event_name, handler, use_capture) &#123;</span><br><span class="line">      <span class="keyword">if</span> (addEventListener) &#123;</span><br><span class="line">        $(element).addEventListener(event_name, handler, use_capture);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        $(element).attachEvent(<span class="string">&#x27;on&#x27;</span> + event_name, handler);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    on(<span class="string">&quot;outer&quot;</span>, <span class="string">&quot;click&quot;</span>, o_click_c, <span class="literal">true</span>);</span><br><span class="line">    on(<span class="string">&quot;outer&quot;</span>, <span class="string">&quot;click&quot;</span>, o_click_b, <span class="literal">false</span>);</span><br><span class="line">    on(<span class="string">&quot;middle&quot;</span>, <span class="string">&quot;click&quot;</span>, m_click_c, <span class="literal">true</span>);</span><br><span class="line">    on(<span class="string">&quot;middle&quot;</span>, <span class="string">&quot;click&quot;</span>, m_click_b, <span class="literal">false</span>);</span><br><span class="line">    on(<span class="string">&quot;inner&quot;</span>, <span class="string">&quot;click&quot;</span>, i_click_c, <span class="literal">true</span>);</span><br><span class="line">    on(<span class="string">&quot;inner&quot;</span>, <span class="string">&quot;click&quot;</span>, i_click_b, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">o_click_c</span></span>() &#123;</span><br><span class="line">      console.log(<span class="string">&quot;outer_捕获&quot;</span>);</span><br><span class="line">      alert(<span class="string">&quot;outer_捕获&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">m_click_c</span></span>() &#123;</span><br><span class="line">      console.log(<span class="string">&quot;middle_捕获&quot;</span>)</span><br><span class="line">      alert(<span class="string">&quot;middle_捕获&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">i_click_c</span></span>() &#123;</span><br><span class="line">      console.log(<span class="string">&quot;inner_捕获&quot;</span>)</span><br><span class="line">      alert(<span class="string">&quot;inner_捕获&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">o_click_b</span></span>() &#123;</span><br><span class="line">      console.log(<span class="string">&quot;outer_冒泡&quot;</span>)</span><br><span class="line">      alert(<span class="string">&quot;outer_冒泡&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">m_click_b</span></span>() &#123;</span><br><span class="line">      console.log(<span class="string">&quot;middle_冒泡&quot;</span>)</span><br><span class="line">      alert(<span class="string">&quot;middle_冒泡&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">function</span> <span class="function"><span class="title">i_click_b</span></span>() &#123;</span><br><span class="line">      console.log(<span class="string">&quot;inner_冒泡&quot;</span>)</span><br><span class="line">      alert(<span class="string">&quot;inner_冒泡&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        Hexo
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            git打tag
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <blockquote>
+<p>通常在发布软件的时候打一个tag，tag会记录版本的commit号，方便后期回溯。</p>
+</blockquote>
+<h3 id="列出已有的tag"><a href="#列出已有的tag" class="headerlink" title="列出已有的tag"></a>列出已有的tag</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Blog King$ git tag</span><br><span class="line">BD2.1.2</span><br><span class="line">BD2.1.3</span><br><span class="line">BD20191213</span><br><span class="line">BD20191219</span><br><span class="line">BD20191220_latest</span><br><span class="line">BDv2.1.0</span><br><span class="line">BDv2.1.1</span><br><span class="line">BDv2.1.4</span><br></pre></td></tr></table></figure>
+<p>加上-l命令可以使用通配符来过滤tag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Blog King$ git tag -l BDv2.1.4</span><br><span class="line">BDv2.1.4</span><br></pre></td></tr></table></figure>
+<h3 id="新建tag"><a href="#新建tag" class="headerlink" title="新建tag"></a>新建tag</h3><p>使用git tag命令跟上tag名字，直接创建一个tag。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Blog King$ git tag v1111</span><br><span class="line">Blog King$ git tag</span><br><span class="line">v1111</span><br></pre></td></tr></table></figure>
+<p>上面创建一个名为v111的tag。使用git tag命令可以看到新增加的tag。</p>
+<p>还可以加上-a参数来创建一个带备注的tag，备注信息由-m指定。如果你未传入-m则创建过程系统会自动为你打开编辑器让你填写备注信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a tagName -m <span class="string">&quot;my tag&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看tag详细信息"><a href="#查看tag详细信息" class="headerlink" title="查看tag详细信息"></a>查看tag详细信息</h3><p>git show命令可以查看tag的详细信息，包括commit号等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Blog King$ git tag</span><br><span class="line">v1111</span><br><span class="line">Blog King$ git show</span><br><span class="line">commit b5e24e4e929e426998950312a7a7a9e3b9d63e8c (HEAD -&gt; master, tag: v1111, origin/master)</span><br><span class="line">Author: Jin Peng &lt;jinpengguan@126.com&gt;</span><br><span class="line">Date:   Sat May 9 23:22:59 2020 +0800</span><br><span class="line"></span><br><span class="line">    ok</span><br><span class="line"></span><br><span class="line">diff --git <span class="string">&quot;a/source/_posts/javascript-\344\270\255\344\272\213\344\273\266\345\206\222\346\263\241\345\222\214\344\272\213\344\273\266\346\215\225\350\216\267\346\234\272\345\210\266.md&quot;</span> <span class="string">&quot;b/source/_posts/javascript-\344\270\255\344\272\213\344\273\266\345\206\222\346\263\241\345\222\214\344\272\213\344\273\266\346\215\225\350\216\267\346\234\272\345\210\266.md&quot;</span></span><br></pre></td></tr></table></figure>
+<p>tag最重要的是有git commit号，后期我们可以根据这个commit号来回溯代码。</p>
+<h3 id="给指定的某个commit号加tag"><a href="#给指定的某个commit号加tag" class="headerlink" title="给指定的某个commit号加tag"></a>给指定的某个commit号加tag</h3><p>打tag不必要在head之上，也可在之前的版本上打，这需要你知道某个提交对象的校验和（通过git log获取，取校验和的前几位数字即可）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.2 9fceb02 -m <span class="string">&quot;my tag&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="将tag同步到远程服务器"><a href="#将tag同步到远程服务器" class="headerlink" title="将tag同步到远程服务器"></a>将tag同步到远程服务器</h3><p>同提交代码后，使用git push来推送到远程服务器一样，tag也需要进行推送才能到远端服务器。<br>使用git push origin [tagName]推送单个分支。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin v111</span><br></pre></td></tr></table></figure>
+<p>推送本地所有tag，使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --tags</span><br></pre></td></tr></table></figure>
+<h3 id="切换到某个tag"><a href="#切换到某个tag" class="headerlink" title="切换到某个tag"></a>切换到某个tag</h3><p>跟分支一样，可以直接切换到某个tag去。这个时候不位于任何分支，处于游离状态，可以考虑基于这个tag创建一个分支。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Blog King$ git checkout v1111</span><br><span class="line">注意：正在切换到 <span class="string">&#x27;v1111&#x27;</span>。</span><br><span class="line"></span><br><span class="line">您正处于分离头指针状态。您可以查看、做试验性的修改及提交，并且您可以在切换</span><br><span class="line">回一个分支时，丢弃在此状态下所做的提交而不对分支造成影响。</span><br><span class="line"></span><br><span class="line">如果您想要通过创建分支来保留在此状态下所做的提交，您可以通过在 switch 命令</span><br><span class="line">中添加参数 -c 来实现（现在或稍后）。例如：</span><br><span class="line"></span><br><span class="line">  git switch -c &lt;新分支名&gt;</span><br><span class="line"></span><br><span class="line">或者撤销此操作：</span><br><span class="line"></span><br><span class="line">  git switch -</span><br><span class="line"></span><br><span class="line">通过将配置变量 advice.detachedHead 设置为 <span class="literal">false</span> 来关闭此建议</span><br><span class="line"></span><br><span class="line">HEAD 目前位于 b5e24e4 ok</span><br></pre></td></tr></table></figure>
+<h3 id="删除某个tag"><a href="#删除某个tag" class="headerlink" title="删除某个tag"></a>删除某个tag</h3><ul>
+<li>本地删除<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Blog King$ git tag -d v1111</span><br><span class="line">已删除标签 <span class="string">&#x27;v1111&#x27;</span>（曾为 b5e24e4）</span><br></pre></td></tr></table></figure></li>
+<li>远端删除<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :refs/tags/v0.1.2</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+</li>
+</ul>
+
+    </div>
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
